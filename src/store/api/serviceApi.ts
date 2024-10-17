@@ -5,6 +5,7 @@ import { url } from 'inspector'
 import { IApproveRequest } from '../../api/types'
 import {
 	CategoryType,
+	ChangeStageStatusType,
 	ChatMessageType,
 	DocumentDocumentation,
 	DocumentLib,
@@ -13,6 +14,8 @@ import {
 	EmploymentDataType,
 	EmploymentDocsType,
 	EmploymentRequestType,
+	EmploymentStageItemType,
+	EmploymentStageStatusType,
 	Exam,
 	ICalendar,
 	IPerformance,
@@ -32,9 +35,6 @@ import {
 	VacancyRequestViewType,
 	VacancyRespondItemType,
 	VacancyViewResponceType,
-	EmploymentStageItemType,
-	EmploymentStageStatusType,
-	ChangeStageStatusType,
 	respondStatus
 } from '../reducers/type'
 
@@ -425,6 +425,20 @@ export const serviceApi = apiSlice.injectEndpoints({
 					responseDate: resp.responseDate.substring(0, 10)
 				}))
 			}
+		}),
+		getSeekerResumeFile: builder.query<{ href: string; size: number }, number>({
+			query: id => ({
+				url: `http://localhost:8082/employment-api/v1/resume/${id}/file`,
+				headers: { Authorization: `Bearer ${personnelDeparmentToken}` },
+				responseHandler: async res => {
+					const data = await res.blob()
+					const file = new Blob([data], {
+						type: res.headers.get('content-type') as string
+					})
+					return { href: window.URL.createObjectURL(file), size: file.size }
+				}
+			}),
+			keepUnusedDataFor: 0
 		}),
 		postPhone: builder.mutation({
 			query: phone => {
@@ -900,9 +914,9 @@ export const serviceApi = apiSlice.injectEndpoints({
 				},
 				body: hasNotRequisites
 					? {
-						acceptance: true,
-						hasNotRequisites: hasNotRequisites
-					}
+							acceptance: true,
+							hasNotRequisites: hasNotRequisites
+					  }
 					: { acceptance: true }
 			})
 		}),
@@ -915,7 +929,10 @@ export const serviceApi = apiSlice.injectEndpoints({
 				}
 			})
 		}),
-		downloadFileEmploymentStages: builder.query<Blob, {respondId: number, fileId: number}> ({
+		downloadFileEmploymentStages: builder.query<
+			Blob,
+			{ respondId: number; fileId: number }
+		>({
 			query: arg => ({
 				url: `http://localhost:8082/employment-api/v1/respond/${arg.respondId}/employment/file/${arg.fileId}/`,
 				method: 'GET',
@@ -924,7 +941,10 @@ export const serviceApi = apiSlice.injectEndpoints({
 				}
 			})
 		}),
-		getEmploymentStageStatus: builder.query<EmploymentStageStatusType, { respondId: number }> ({
+		getEmploymentStageStatus: builder.query<
+			EmploymentStageStatusType,
+			{ respondId: number }
+		>({
 			query: arg => ({
 				url: `http://localhost:8082/employment-api/v1/management/respond/${arg.respondId}/employment`,
 				method: 'GET',
@@ -951,7 +971,7 @@ export const serviceApi = apiSlice.injectEndpoints({
 				},
 				body: {
 					status: arg.status,
-					comment: arg.comment,
+					comment: arg.comment
 				}
 			})
 		}),
@@ -977,7 +997,7 @@ export const serviceApi = apiSlice.injectEndpoints({
 				}
 			})
 		}),
-		changeCardStatusRequest: builder.mutation<void, {subStageId: number}> ({
+		changeCardStatusRequest: builder.mutation<void, { subStageId: number }>({
 			query: arg => ({
 				url: `http://localhost:8082/employment-api/v1/management/employment/sub-stage/${arg.subStageId}/has-requisites`,
 				method: 'PATCH',
@@ -986,6 +1006,24 @@ export const serviceApi = apiSlice.injectEndpoints({
 				}
 			})
 		}),
+		agreeToWorkingConditions: builder.mutation<void, number>({
+			query: respondId => ({
+				url: `http://localhost:8082/employment-api/v1/respond/${respondId}/employment/working-conditions`,
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${seekerToken}`
+				}
+			})
+		}),
+		setHasNoRequisitesOnEmployment: builder.mutation<void, number>({
+			query: respondId => ({
+				url: `http://localhost:8082/employment-api/v1/respond/${respondId}/employment/requisites-missing`,
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${seekerToken}`
+				}
+			})
+		})
 	})
 })
 export const {
@@ -1076,6 +1114,10 @@ export const {
 	useGetSupervisorRespondsQuery,
 	useSendEmploymentDocsMutation,
 	useChangeCardStatusRequestMutation,
+	useAgreeToWorkingConditionsMutation,
+	useSetHasNoRequisitesOnEmploymentMutation,
+	useGetSeekerResumeFileQuery,
+	useLazyGetSeekerResumeFileQuery,
 	useGetEmploymentReqStageStatusQuery,
-	useChangeEmploymentStageAccountingStatusRequestMutation,
+	useChangeEmploymentStageAccountingStatusRequestMutation
 } = serviceApi

@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Button, ConfigProvider, Modal, Spin, Tag } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Margin, usePDF } from 'react-to-pdf'
@@ -15,7 +15,9 @@ import {
 	useDeleteReserveRespondMutation,
 	useGetChatIdByRespondIdQuery,
 	useGetReservedResponcesQuery,
-	useGetReservedRespondFullInfoQuery
+	useGetReservedRespondFullInfoQuery,
+	useGetSeekerResumeFileQuery,
+	useLazyGetSeekerResumeFileQuery
 } from '../../../store/api/serviceApi'
 import { openChat } from '../../../store/reducers/ChatRespondStatusSlice'
 import { setRespondId } from '../../../store/reducers/CurrentRespondIdSlice'
@@ -32,6 +34,8 @@ export const ReserveRespondInfo = (props: {
 	const respondId = useAppSelector(state => state.currentResponce)
 
 	const { data: res } = useGetReservedRespondFullInfoQuery(respondId.respondId)
+	//const { data: resume } = useGetSeekerResumeFileQuery(respondId.respondId)
+	const [getResume] = useLazyGetSeekerResumeFileQuery()
 	const { refetch } = useGetReservedResponcesQuery('все')
 	const [approveRespond] = useApproveReservedRespondMutation()
 	const [deleteRespond] = useDeleteReserveRespondMutation()
@@ -39,10 +43,23 @@ export const ReserveRespondInfo = (props: {
 	const [isRespondSentToSupervisor, setIsRespondSentToSupervisor] =
 		useState<boolean>(res?.status === 'IN_SUPERVISOR_REVIEW')
 	const [isModalOpen, setModalOpen] = useState(false)
+	const [resume, setResume] = useState<string>('')
+	const [resumeSize, setResumeSize] = useState<number>(0)
+
+	//const linkRef = useRef<HTMLAnchorElement | null>(null)
 
 	useEffect(() => {
 		setIsRespondSentToSupervisor(res?.status === 'IN_SUPERVISOR_REVIEW')
 	}, [res])
+
+	useEffect(() => {
+		getResume(respondId.respondId)
+			.unwrap()
+			.then(resume => {
+				setResume(prev => resume.href)
+				setResumeSize(prev => resume.size)
+			})
+	}, [])
 
 	const navigate = useNavigate()
 
@@ -100,7 +117,7 @@ export const ReserveRespondInfo = (props: {
 			</>
 		)
 	} else {
-		if (res.type === 'RESERVE') {
+		if (res.type === 'RESPOND') {
 			return (
 				<>
 					<ConfigProvider
@@ -358,6 +375,14 @@ export const ReserveRespondInfo = (props: {
 										</>
 									))}
 								</div>
+								{res.respondData.portfolio.url !== '' && (
+									<div className="grid grid-cols-[164px_auto] gap-x-[20px] gap-y-[24px] w-[90%]">
+										<p>Ссылка на портфолио:</p>
+										<a href={res.respondData.portfolio.url} target="_blank">
+											{res.respondData.portfolio.url}
+										</a>
+									</div>
+								)}
 							</div>
 							<hr />
 							<div className="flex flex-col gap-[24px]">
@@ -533,7 +558,15 @@ export const ReserveRespondInfo = (props: {
 									</p>
 									<div className="bg-white rounded-[16px] shadow-custom-shadow h-[59px] w-[65%] p-[20px] flex">
 										<MyDocsSvg />
-										<p className="ml-[20px] font-content-font font-normal text-black text-[16px]/[19.2px] underline">
+										<p
+											className="ml-[20px] font-content-font font-normal text-black text-[16px]/[19.2px] underline cursor-pointer"
+											onClick={() => {
+												const link = document.createElement('a')
+												link.href = resume
+												link.download = 'Резюме'
+												link.click()
+											}}
+										>
 											{'Резюме ' +
 												res.userData?.lastname +
 												' ' +
@@ -542,7 +575,7 @@ export const ReserveRespondInfo = (props: {
 												res.userData?.middlename}
 										</p>
 										<p className="ml-auto font-content-font font-normal text-black text-[16px]/[19.2px] opacity-70">
-											123 кб
+											{resumeSize}
 										</p>
 									</div>
 								</div>

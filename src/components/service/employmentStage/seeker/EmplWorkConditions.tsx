@@ -2,6 +2,7 @@ import { Checkbox } from 'antd'
 import { useDispatch } from 'react-redux'
 
 import { useAppSelector } from '../../../../store'
+import { useAgreeToWorkingConditionsMutation } from '../../../../store/api/serviceApi'
 import {
 	setStageProgressAsFilling,
 	setStageProgressAsReady
@@ -16,6 +17,8 @@ export const EmplWorkConditions = (props: {
 	const progress = stages.find(stage => stage.id === props.stageId)
 	const dispatch = useDispatch()
 
+	const [agree] = useAgreeToWorkingConditionsMutation()
+
 	return (
 		<>
 			<div>
@@ -23,7 +26,9 @@ export const EmplWorkConditions = (props: {
 					checked={progress?.status === 'READY'}
 					onChange={e => {
 						e.target.checked
-							? dispatch(setStageProgressAsReady(props.stageId))
+							? agree(props.respondId).then(() => {
+									dispatch(setStageProgressAsReady(props.stageId))
+							  })
 							: dispatch(setStageProgressAsFilling(props.stageId))
 					}}
 				>
