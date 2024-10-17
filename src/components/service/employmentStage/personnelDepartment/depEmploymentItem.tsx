@@ -7,7 +7,6 @@ import {
 } from '../../../../store/api/serviceApi'
 import { useDispatch } from 'react-redux'
 import { EmploymentStageItemType } from '../../../../store/reducers/type'
-import { useAppSelector } from '../../../../store'
 import {
 	setCurrentEmploymentSeekerName,
 	setCurrentEmploymentSeekerVacancy
@@ -30,7 +29,7 @@ export const DepEmploymentItem = (  props : EmploymentStageItemType ) => {
 		chatId: props.respondId,
 		role: 'PERSONNEL_DEPARTMENT'
 	})
-
+	console.log(props.status)
 	return (
 		<div className="flex flex-col">
 			<div className="flex flex-row items-center h-[80px] w-full bg-[#FFFFFF]">

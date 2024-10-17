@@ -6,11 +6,11 @@ import { LoadingOutlined } from '@ant-design/icons'
 
 export const RequisiteReview = () => {
 
-	const { data: employment_stage_items = [], isLoading: loading } = useGetPersonnelStagesQuery();
+	const { data: requisite_items = [], isLoading: loading } = useGetPersonnelStagesQuery();
 
-	const verifyingItems = employment_stage_items.filter(item => item.status === 'VERIFYING');
-	const refineItems = employment_stage_items.filter(item => item.status === 'REFINE');
-	const completeItems = employment_stage_items.filter(item => item.status === 'COMPLETE');
+	const verifyingItems = requisite_items.filter(item => item.status === 'VERIFYING');
+	const refineItems = requisite_items.filter(item => item.status === 'REFINE');
+	const completeItems = requisite_items.filter(item => item.status === 'COMPLETE');
 	const allItems = [...verifyingItems, ...refineItems, ...completeItems]
 
 	const [currentFilterItem, setCurrentFilterItem] = useState('ALL')

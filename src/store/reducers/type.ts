@@ -467,7 +467,7 @@ export type EmploymentStageStatusType = {
 		status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'ACCEPTED'
 		comment: string
 		type: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH' | 'FIFTH' | 'SIXTH'
-		document: {
+		documents: {
 			id: number
 			docType: string
 			status: 'ATTACHED' | 'NOT_ATTACHED'

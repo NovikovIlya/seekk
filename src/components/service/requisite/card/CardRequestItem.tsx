@@ -6,19 +6,28 @@ import { useNavigate } from 'react-router-dom'
 import { Button, ConfigProvider, Modal } from 'antd'
 import { DocumentElem } from '../../employmentStage/personnelDepartment/components/DocumentElem'
 
-export const CardRequestItem = () => {
+interface Document {
+	id: number
+	docType: string
+	status: 'ATTACHED' | 'NOT_ATTACHED'
+}
+interface CardRequisiteDocumentsProps {
+	documentArray: Document[] | undefined
+}
+
+export const CardRequestItem = ( props : CardRequisiteDocumentsProps ) => {
 
 	const navigate = useNavigate()
-	const [markCardGiven] = useChangeCardStatusRequestMutation()
+	const [chandeCardStatus] = useChangeCardStatusRequestMutation()
 
 	const [isAceptionModalOpen, setIsAceptionModalOpen] = useState(false)
 
 	const ContentComponent = () => {
 		return (
 			<div className="flex flex-row gap-[40px] pr-[150px]">
-				<div className="flex flex-col gap-[12px] ">
-					<DocumentElem name={'Скан паспорта'}></DocumentElem>
-				</div>
+				{props.documentArray?.map((document) => (
+					<DocumentElem key={document.id} name={document.docType} id={document.id}/>
+				))}
 			</div>
 		)
 	}
@@ -52,7 +61,8 @@ export const CardRequestItem = () => {
 								className="rounded-[54.5px] text-[14px] w-full py-[13px]"
 								type="primary"
 								onClick={() => {
-										markCardGiven({ subStageId: 5 })
+										console.log('жопа')
+										chandeCardStatus({ subStageId: 6 })
 										navigate('/services/personnelaccounting/requisite/card-creation')
 								}}
 							>

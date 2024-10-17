@@ -5,8 +5,7 @@ import { useAppSelector} from '../../../../store'
 import { setCurrentResponce } from '../../../../store/reducers/CurrentResponceSlice'
 import { DepEmploymentStageItem } from './depEmploymentStageItem'
 import { LoadingOutlined } from '@ant-design/icons'
-import { useGetEmploymentStageStatusQuery } from '../../../../store/api/serviceApi'
-import { number } from 'yup'
+import { useGetEmploymentStageStatusQuery, useGetEmploymentReqStageStatusQuery } from '../../../../store/api/serviceApi'
 
 export const EmploymentStageInfo = ( ) => {
 
@@ -46,7 +45,7 @@ export const EmploymentStageInfo = ( ) => {
 	return (
 		<>
 			<div className="w-full flex flex-col px-[53px] mt-[140px]">
-				<h1 className="font-normal text-[28px]/[28px]">Вакансия «{employmentSeekerVacancy}»</h1>
+				<h1 className="font-normal text-[28px]/[28px]">{employmentSeekerName}</h1>
 				<Button
 					type="default"
 					className="max-w-[102px] bg-[#F5F8FB] mt-[20px] py-[8px] px-[24px] text-[#333333] border-[#333333] border-[1px] rounded-[54.5px] text-[16px]"
@@ -56,41 +55,42 @@ export const EmploymentStageInfo = ( ) => {
 					}}
 				>Резюме</Button>
 				<h3 className="mt-[53px] text-[18px] font-normal">
-					Соискатель: <span className="font-bold">{employmentSeekerName}</span>
+					Вакансия: <span className="font-bold">«{employmentSeekerVacancy}»</span>
 				</h3>
 				<div className="mt-[40px] mb-[100px] gap-[12px] flex flex-col ">
-					{sortedStages?.[0] && (
-						<DepEmploymentStageItem
-							stage={2}
-							comment={sortedStages[0].comment}
-							stageStatus={sortedStages[0].status}
-						/>
-					)}
-
 					{sortedStages?.[1] && (
 						<DepEmploymentStageItem
-							stage={3}
+							stage={2}
 							comment={sortedStages[1].comment}
 							stageStatus={sortedStages[1].status}
-						/>
+						 	documentArray={sortedStages[1].documents}/>
 					)}
 
 					{sortedStages?.[2] && (
 						<DepEmploymentStageItem
-							stage={4}
+							stage={3}
 							comment={sortedStages[2].comment}
 							stageStatus={sortedStages[2].status}
-						/>
+							documentArray={sortedStages[2].documents}/>
 					)}
 
 					{sortedStages?.[3] && (
 						<DepEmploymentStageItem
-							stage={5}
+							stage={4}
 							comment={sortedStages[3].comment}
 							stageStatus={sortedStages[3].status}
+							documentArray={sortedStages[3].documents}
 						/>
 					)}
 
+					{sortedStages?.[4] && (
+						<DepEmploymentStageItem
+							stage={5}
+							comment={sortedStages[4].comment}
+							stageStatus={sortedStages[4].status}
+							documentArray={sortedStages[4].documents}
+						/>
+					)}
 				</div>
 			</div>
 		</>

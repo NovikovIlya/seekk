@@ -43,7 +43,7 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 			<div
 				ref={ref}
 				className={clsx(
-					'rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px]',
+					'rounded-[16px] w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px]',
 					{
 						'self-start rounded-bl-none bg-white':
 							(props.msgData.sender === 'SEEKER' && isEmpDep) ||
@@ -111,50 +111,6 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 					)}
 				</div>
 			</div>
-			{/*
-			{props.msgData.type === 'INVITATION' && (
-				<div className='flex flex-col'>
-					<div className="rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px] rounded-bl-none bg-[#FFFFFF] mt-[12px]">
-						<p className='text-[#808080] text-[16px]/[19.2px]'>
-							Анастасия, HR-менеджер
-						</p>
-						<p className='text-[16px]/[19.2px]'>
-							Иван, руководитель приглашает вас на оффлайн собеседование. Удобно ли вам подойти по адресу Кремлевская, 35 в 15:00?
-							Выберите пожалуйста подходящий ответ
-						</p>
-						<p className='text-[#7A7A7A] text-[12px] flex self-end'>
-							12:23
-						</p>
-					</div>
-					<div className="mt-[24px] max-w-[50%] grid grid-cols-2 grid-rows-[40px_40px] gap-[20px]">
-						<button
-							onClick={() => {
-								answerMainTime({id: respondId, ans: 'YES'})
-							}}
-							className="rounded-[54.5px] bg-inherit outline-none border cursor-pointer"
-						>
-							Да
-						</button>
-						<button
-							onClick={() => {
-								answerMainTime({id: respondId, ans: 'NO'})
-							}}
-							className="rounded-[54.5px] bg-inherit outline-none border cursor-pointer"
-						>
-							Не удобно
-						</button>
-						<button
-							onClick={() => {
-								answerMainTime({id: respondId, ans: 'NOT_RELEVANT'})
-							}}
-							className="col-span-2 rounded-[54.5px] bg-inherit outline-none border cursor-pointer"
-						>
-							Вакансия не актуальна
-						</button>
-					</div>
-				</div>
-			)}
-			*/}
 			{props.msgData.type === 'INVITATION' && (
 				<div
 					className={clsx(
@@ -195,23 +151,20 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 					</button>
 				</div>
 			)}
-			{props.msgData.type === 'INVITATION_RESERVE' &&
-				props.msgData.reserveTimes !== null && (
-					<div className="flex flex-col">
-						{/*
-					<div className="rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px] rounded-bl-none bg-[#FFFFFF] mt-[12px]">
-						<p className='text-[#808080] text-[16px]/[19.2px]'>
-							Анастасия, HR-менеджер
-						</p>
-						<p className='text-[16px]/[19.2px]'>
-							Выберите удобное для вас время
-						</p>
-						<p className='text-[#7A7A7A] text-[12px] flex self-end'>
-							12:23
-						</p>
-					</div>
-					*/}
-						<div className="mt-[24px] max-w-[50%] flex flex-col gap-[14px]">
+			{(props.msgData.type === 'INVITATION_RESERVE') &&
+				(props.msgData.reserveTimes !== null) && (
+					<div className={clsx(
+						'w-[50%] flex flex-col',
+						{
+							'self-start':
+								(props.msgData.sender === 'SEEKER' && isEmpDep) ||
+								(props.msgData.sender === 'PERSONNEL_DEPARTMENT' && !isEmpDep),
+							'self-end':
+								(props.msgData.sender === 'SEEKER' && !isEmpDep) ||
+								(props.msgData.sender === 'PERSONNEL_DEPARTMENT' && isEmpDep)
+						}
+					)}>
+						<div className="mt-[24px] w-[100%] flex flex-col gap-[14px]">
 							<div className="flex flex-row justify-between gap-[14px]">
 								{props.msgData.reserveTimes.map(time => (
 									<button
@@ -233,7 +186,7 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 								onClick={() => {
 									answerReserveTime({ respondId: respondId })
 								}}
-								className="text-[16px]/[19.2px] w-full rounded-[54.5px]  py-[12px] px-[56px] bg-inherit outline-none border cursor-pointer"
+								className="text-[16px]/[19.2px]  rounded-[54.5px]  py-[12px] px-[56px] bg-inherit outline-none border cursor-pointer"
 							>
 								Нет подходящего времени
 							</button>
@@ -241,23 +194,18 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 					</div>
 				)}
 			{props.msgData.type === 'EMPLOYMENT_REQUEST' && (
-				<div className="flex flex-col">
-					{/*
-					<div className="rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px] rounded-bl-none bg-[#FFFFFF] mt-[12px]">
-						<p className='text-[#808080] text-[16px]/[19.2px]'>
-							Анастасия, HR-менеджер
-						</p>
-						<p className='text-[16px]/[19.2px]'>
-							Здравствуйте! <br/>
-							Руководитель приглашает вас на работу. <br/>
-							Вы принимаете приглашение?
-						</p>
-						<p className='text-[#7A7A7A] text-[12px] flex self-end'>
-							12:23
-						</p>
-					</div>
-					*/}
-					<div className="mt-[24px] max-w-[50%] flex flex-row gap-[20px]">
+				<div className={clsx(
+					'w-[50%] flex flex-col',
+					{
+						'self-start':
+							(props.msgData.sender === 'SEEKER' && isEmpDep) ||
+							(props.msgData.sender === 'PERSONNEL_DEPARTMENT' && !isEmpDep),
+						'self-end':
+							(props.msgData.sender === 'SEEKER' && !isEmpDep) ||
+							(props.msgData.sender === 'PERSONNEL_DEPARTMENT' && isEmpDep)
+					}
+				)}>
+					<div className="mt-[24px] w-[100%] flex flex-row gap-[20px]">
 						<button
 							onClick={() => {
 								answerEmploymentRequest({ respondId: respondId, answer: 'YES' })
@@ -277,40 +225,6 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 					</div>
 				</div>
 			)}
-			{/*
-			{props.msgData.type === 'EMPLOYMENT_REQUEST_STATIC' && (
-				<div className='flex flex-col'>
-					<div className="rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px] rounded-bl-none bg-[#FFFFFF] mt-[12px]">
-						<p className='text-[#808080] text-[16px]/[19.2px]'>
-							Анастасия, HR-менеджер
-						</p>
-						<p className='text-[16px]/[19.2px]'>
-							Рады, что вы приняли наше предложение!
-							В качестве дальнейших действий, просим вас пройти «Этап трудоустройства»
-						</p>
-						<p className='text-[#7A7A7A] text-[12px] flex self-end'>
-							12:23
-						</p>
-					</div>
-
-				</div>
-			)}
-			{props.msgData.type === '' && (
-				<div className='flex flex-col'>
-					<div className="rounded-[16px] max-w-[50%] p-[20px] flex flex-col gap-[16px] font-content-font font-normal text-black text-[16px]/[19.2px] rounded-bl-none bg-[#FFFFFF] mt-[12px]">
-						<p className='text-[#808080] text-[16px]/[19.2px]'>
-							Анастасия, HR-менеджер
-						</p>
-						<p className='text-[16px]/[19.2px]'>
-							Позвоните пожалуйста в Управление кадров для подбора подходящего времени.
-						</p>
-						<p className='text-black text-[16px]/[19.2px] font-bold'>
-							+7 999 999-99-99
-						</p>
-					</div>
-				</div>
-			)}
-			*/}
 		</>
 	)
 })

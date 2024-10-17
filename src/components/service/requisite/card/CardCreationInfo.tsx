@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../../../store'
 import { useDispatch } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons'
+import { useGetEmploymentReqStageStatusQuery, useGetEmploymentStageStatusQuery } from '../../../../store/api/serviceApi'
 
 export const CardCreationInfo = () => {
 
@@ -14,6 +15,27 @@ export const CardCreationInfo = () => {
 	const respondId = useAppSelector(state => state.currentResponce)
 	const seekerName  = useAppSelector(state => state.requisiteSeeker.currentRequisiteSeekerName)
 	const seekerVacancy  = useAppSelector(state => state.requisiteSeeker.currentRequisiteSeekerVacancy)
+
+	const { data: items_data, isLoading: loading } = useGetEmploymentReqStageStatusQuery({ respondId: respondId.respondId })
+	const stagesArray = items_data?.stages || []
+	const sortedStages = stagesArray.flat().sort((a, b) => a.id - b.id)
+
+	if (loading) {
+		return (
+			<>
+				<div className="w-screen h-screen flex items-center">
+					<div className="text-center ml-auto mr-[50%]">
+						<Spin
+							indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />}
+						></Spin>
+						<p className="font-content-font font-normal text-black text-[18px]/[18px]">
+							Идёт загрузка...
+						</p>
+					</div>
+				</div>
+			</>
+		)
+	}
 
 	return (
 		<>
@@ -31,7 +53,7 @@ export const CardCreationInfo = () => {
 					Вакансия: <span className="font-bold">{seekerVacancy}</span>
 				</h3>
 				<div className="mt-[40px] mb-[100px] gap-[12px] flex flex-col ">
-					<CardRequestItem></CardRequestItem>
+					<CardRequestItem documentArray={sortedStages[0].documents}></CardRequestItem>
 				</div>
 			</div>
 		</>

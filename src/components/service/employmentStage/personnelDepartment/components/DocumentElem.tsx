@@ -1,38 +1,40 @@
 import { DocumentIcon } from '../../../../../assets/svg/DocumentIcon'
-import { useDownloadEmploymentStageFileQuery } from "../../../../../store/api/serviceApi"
+import {
+	useDownloadEmploymentStageFileQuery,
+} from '../../../../../store/api/serviceApi'
 
 interface DocumentElemProps {
 	name: string
-
+	id: number
 }
 
 export const DocumentElem = (props: DocumentElemProps) => {
+	// ругается - не работает, все переделать
+	const download = useDownloadEmploymentStageFileQuery
 
-	const fileId = 1 // TODO прикрутить реальный id
-
-	const { data: fileBlob } = useDownloadEmploymentStageFileQuery({ fileId: fileId })
-
-	// Проверка на наличие
-	const fileSizeInKB = fileBlob ? (fileBlob.size / 1024).toFixed(2) : 'N/A'
-
-	const downloadFile = (fileBlob: Blob, fileName: string) => {
-		const link = document.createElement('a')
-		link.href = window.URL.createObjectURL(fileBlob)
-		link.download = fileName
-		link.click()
-
-	}
-
+	const downloadFile = async (fileName: string, fileId: number) => {
+		console.log('downloading...')
+		try {
+			const { data: fileBlob } = download({ fileId: fileId });
+			if (fileBlob) {
+				const link = document.createElement('a');
+				link.href = window.URL.createObjectURL(fileBlob);
+				link.download = fileName;
+				link.click();
+			} else {
+				console.error('Файл не найден');
+			}
+		} catch (error) {
+			console.error('Произошла ошибка при загрузке файла', error);
+		}
+	};
 	return (
 		<button
-			className="flex flex-row w-[388px] justify-between cursor-pointer bg-white border-none
+			className="flex flex-row min-w-[500px] w-[50%] justify-between cursor-pointer bg-white border-none
       hover:opacity-[80%]"
 			onClick={() => {
-				if (fileBlob) {
-					downloadFile(fileBlob, props.name)
-				} else {
-					alert('Файл не найден.')
-				}
+				console.log('click')
+				downloadFile(props.name, props.id)
 			}}>
 			<div className='flex flex-row items-center'>
 				<DocumentIcon />
@@ -40,9 +42,11 @@ export const DocumentElem = (props: DocumentElemProps) => {
           {props.name}
         </span>
 			</div>
+			{/*
 			<span className="font-normal opacity-[70%] text-[16px]/[19.2px]">
-        {fileSizeInKB !== 'N/A' ? `${fileSizeInKB} кб` : '???'}
+         xz
       </span>
+			*/}
 		</button>
 	)
 }
