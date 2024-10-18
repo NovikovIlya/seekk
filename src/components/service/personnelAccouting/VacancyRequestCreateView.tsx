@@ -220,7 +220,7 @@ export const VacancyRequestCreateView = () => {
 										category: categoryTitle,
 										direction: direction,
 										subdivision: subdivision,
-										emplDocDefIds: [...values.formDocs, 4]
+										emplDocDefIds: [...values.formDocs, 8]
 									},
 									requestId: requestId
 							  })
@@ -305,103 +305,62 @@ export const VacancyRequestCreateView = () => {
 					<Form.Item name={'formDocs'} valuePropName="checked">
 						<Checkbox.Group
 							name="docs"
-							defaultValue={[1, 2, 3, 5, 6, 7, 8, 9, 11, 12, 14]}
+							defaultValue={[1, 2, 3, 4, 5, 6]}
 							className="flex flex-col gap-[8px]"
 						>
 							<p className="font-content-font text-black font-bold text-[18px]/[21.6px] opacity-80 mb-[16px]">
 								2 этап. Прикрепление документов
 							</p>
 							<Checkbox
-								value={5}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Заявление о приёме на работу
-							</Checkbox>
-							<Checkbox
-								value={6}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Документ, удостоверяющий личность
-							</Checkbox>
-							<Checkbox
 								value={1}
 								disabled
 								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
 							>
-								СНИЛС
+								Документ, удостоверяющий личность (разворот с фото и прописка)
 							</Checkbox>
 							<Checkbox
 								value={2}
 								disabled
 								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
 							>
-								ИНН
+								Трудовая книжка
 							</Checkbox>
 							<Checkbox
 								value={3}
 								disabled
 								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
 							>
+								СНИЛС
+							</Checkbox>
+							<Checkbox
+								value={4}
+								disabled
+								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
+							>
+								ИНН
+							</Checkbox>
+							<Checkbox
+								value={5}
+								disabled
+								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
+							>
 								Копия документов об образовании
-							</Checkbox>
-							<Checkbox
-								value={8}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Трудовой договор в 2 экземплярах
-							</Checkbox>
-							<Checkbox
-								value={11}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Заполненный личный листок по учету кадров
-							</Checkbox>
-							<Checkbox
-								value={12}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Бланк согласия на обработку персональных данных
-							</Checkbox>
-							<Checkbox
-								value={7}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Трудовая книжка
-							</Checkbox>
-							<Checkbox
-								value={9}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Лист ознакомления с должностными инструкциями
-							</Checkbox>
-							<Checkbox
-								value={10}
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Справка об отсутствии (наличии) судимости
 							</Checkbox>
 							<p className="font-content-font text-black font-bold text-[18px]/[21.6px] opacity-80 mb-[16px] mt-[24px]">
 								4 этап. Медицинский осмотр
 							</p>
 							<Checkbox
-								value={14}
+								value={6}
 								disabled
 								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
 							>
 								Заключение профпатолога о профессиональной пригодности работника
 							</Checkbox>
 							<Checkbox
-								value={13}
+								value={7}
 								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
 							>
-								Психиатрическое заключение
+								Справка об отсутствии (наличии) судимости
 							</Checkbox>
 						</Checkbox.Group>
 					</Form.Item>

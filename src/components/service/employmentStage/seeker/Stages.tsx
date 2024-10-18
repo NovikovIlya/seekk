@@ -35,9 +35,18 @@ export const Stages = () => {
 	)
 
 	const { currentStage } = useAppSelector(state => state.currentEmploymentStage)
+	const { docs } = useAppSelector(state => state.employmentSeekerDocs)
 
 	const [getEmpData, empData] = useLazyGetEmploymentDataQuery()
 	const [getEmpDocs, empDocs] = useLazyGetEmploymentDocsQuery()
+
+	useEffect(() => {
+		getEmpDocs(vacancyId)
+			.unwrap()
+			.then(data => {
+				dispatch(setDocs(data))
+			})
+	}, [])
 
 	useEffect(() => {
 		getEmpData(respondId)
@@ -60,17 +69,40 @@ export const Stages = () => {
 						// 		return stage
 						// 	}
 						// })
-						data.stages
+						data.stages.map(stage => {
+							if (stage.status === 'FILLING') {
+								// if (!stage.workingConditionAccepted) {
+								// 	return { ...stage, status: 'READY' }
+								// }
+								// if (stage.hasRequisites !== false) {
+								// 	return { ...stage, status: 'READY' }
+								// }
+								// if (
+								// 	stage.documents.length !==
+								// 	docs.map(doc => doc.employmentStageType === stage.type).length
+								// ) {
+								// 	return { ...stage, status: 'READY' }
+								// } else {
+								// 	return stage
+								// }
+								if (stage.workingConditionAccepted) {
+									return { ...stage, status: 'READY' }
+								} else if (stage.hasRequisites === false) {
+									return { ...stage, status: 'READY' }
+								} else if (
+									stage.documents.length !==
+									docs.map(doc => doc.employmentStageType === stage.type).length
+								) {
+									return { ...stage, status: 'READY' }
+								} else {
+									return stage
+								}
+							} else {
+								return stage
+							}
+						})
 					)
 				)
-			})
-	}, [])
-
-	useEffect(() => {
-		getEmpDocs(vacancyId)
-			.unwrap()
-			.then(data => {
-				dispatch(setDocs(data))
 			})
 	}, [])
 

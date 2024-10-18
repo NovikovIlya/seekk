@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Modal } from 'antd'
+import { Button, Checkbox, ConfigProvider, Modal } from 'antd'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,6 +24,8 @@ export const EmplSend = (props: {
 	const [resultModalText, setResultModalText] = useState<string>('')
 
 	const navigate = useNavigate()
+
+	const [agree, setAgree] = useState<boolean>(false)
 
 	return (
 		<>
@@ -97,7 +99,16 @@ export const EmplSend = (props: {
 						<li>Необходимо завести банковскую карту</li>
 					</ol>
 				)}
+				<Checkbox
+					checked={agree}
+					onChange={() => {
+						setAgree(prev => !prev)
+					}}
+				>
+					Подтверждаю достоверность документов
+				</Checkbox>
 				<Button
+					disabled={!agree}
 					type="primary"
 					className="rounded-[54.5px] w-[282px]"
 					onClick={() => {

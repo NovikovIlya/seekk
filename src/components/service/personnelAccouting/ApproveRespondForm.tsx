@@ -10,7 +10,7 @@ export const ApproveRespondForm = (props: {
 	respondId: number
 	vacancyId: number
 	isRespondSentToSupervisor: boolean
-	mode: 'DIRECTLY' | 'RESERVE'
+	mode: 'RESUME' | 'RESPOND'
 	callback: Function
 }) => {
 	const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
@@ -86,7 +86,7 @@ export const ApproveRespondForm = (props: {
 			</Modal>
 			<Button
 				onClick={() => {
-					props.mode === 'DIRECTLY'
+					props.mode === 'RESUME'
 						? setIsFormOpen(true)
 						: approveRespond({ respondId: props.respondId, vacancyId: 0 })
 								.unwrap()

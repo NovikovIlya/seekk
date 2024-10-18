@@ -224,6 +224,8 @@ export type RespondItemType = {
 	id: number
 	vacancyId: number
 	name: string
+	desiredJob: string
+	type: 'RESPOND' | 'RESUME'
 	respondDate: string
 	status: string
 	employmentStageStatus: string
@@ -291,7 +293,7 @@ export type VacancyRespondItemType = {
 		| 'ARCHIVE'
 	recipient: string
 	desiredJob: string
-	type: 'DIRECTLY' | 'RESERVE'
+	type: 'RESUME' | 'RESPOND'
 	url: string
 	userData: null | {
 		firstname: string
@@ -392,6 +394,7 @@ export type InterviewRequestType = {
 	respondId: number
 	date: string
 	format: string
+	address: string
 }
 
 export type InterviewItemType = {
@@ -442,6 +445,7 @@ export type EmploymentDataType = {
 		}[]
 		hasRequisites?: boolean
 		testLink?: string
+		workingConditionAccepted?: boolean
 	}[]
 }
 

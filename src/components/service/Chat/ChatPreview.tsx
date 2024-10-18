@@ -17,7 +17,10 @@ import { setRespondId } from '../../../store/reducers/CurrentRespondIdSlice'
 import { setCurrentVacancyId } from '../../../store/reducers/CurrentVacancyIdSlice'
 import { setCurrentVacancyName } from '../../../store/reducers/CurrentVacancyNameSlice'
 import { setChatId } from '../../../store/reducers/chatIdSlice'
-import { respondStatus } from '../../../store/reducers/type'
+import {
+	ChatMessageDateDisplayEnum,
+	respondStatus
+} from '../../../store/reducers/type'
 
 export const ChatPreview = (props: {
 	respondId: number
@@ -96,13 +99,17 @@ export const ChatPreview = (props: {
 					<div className="w-full flex justify-between">
 						<p className="text-base w-[60%]">{props.respName}</p>
 						<div className="flex flex-col">
-							<p className=" font-content-font font-normal text-black text-[12px]/[14.4px] opacity-[52%]">
-								{chatInfo.lastMessageDate.substring(8, 10) +
-									'.' +
-									chatInfo.lastMessageDate.substring(5, 7) +
-									' ' +
-									chatInfo.lastMessageDate.substring(11, 16)}
-							</p>
+							{chatInfo.lastMessageDate && (
+								<p className=" font-content-font font-normal text-black text-[12px]/[14.4px] opacity-[52%]">
+									{chatInfo.lastMessageDate.substring(8, 10) +
+										' ' +
+										ChatMessageDateDisplayEnum[
+											parseInt(chatInfo.lastMessageDate.substring(5, 7)) - 1
+										].substring(0, 3) +
+										' ' +
+										chatInfo.lastMessageDate.substring(11, 16)}
+								</p>
+							)}
 							{unreadCount !== 0 && !isChatOpen && (
 								<Badge
 									className="ml-auto mt-[4px]"

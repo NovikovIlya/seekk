@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { useAppSelector } from '../../../../store'
+import { useSetHasNoRequisitesOnEmploymentMutation } from '../../../../store/api/serviceApi'
 import { setHasRequisites } from '../../../../store/reducers/EmploymentDataSlice'
 import {
 	setStageProgressAsFilling,
@@ -22,6 +23,8 @@ export const EmplRequisites = (props: {
 		stage => stage.type === props.stageName
 	)
 	const dispatch = useDispatch()
+
+	const [setHasNoRequisites] = useSetHasNoRequisitesOnEmploymentMutation()
 
 	useEffect(() => {
 		if (foundStage) {
@@ -71,7 +74,9 @@ export const EmplRequisites = (props: {
 						className=""
 						checked={!foundStage?.hasRequisites}
 						onClick={() => {
-							dispatch(setHasRequisites(props.stageName))
+							setHasNoRequisites(props.respondId).then(() => {
+								dispatch(setHasRequisites(props.stageName))
+							})
 						}}
 					>
 						У меня нет ни одной из указанных карт
