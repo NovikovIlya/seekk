@@ -51,7 +51,7 @@ export const DepEmploymentItem = (  props : EmploymentStageItemType ) => {
 						<span>На проверке</span>
 					</div>
 				)}
-				{props.status === 'COMPLETE' && (
+				{props.status === 'ACCEPTED' && (
 					<div className="flex items-center w-[16%] gap-[12px]">
 						<div className="w-[11px] h-[11px] rounded-[100%] bg-[#00AB30]"></div>
 						<span>Принято</span>
@@ -65,7 +65,7 @@ export const DepEmploymentItem = (  props : EmploymentStageItemType ) => {
 							dispatch(setCurrentResponce(props.respondId))
 							dispatch(setCurrentEmploymentSeekerVacancy(props.vacancy.name))
 							dispatch(setCurrentEmploymentSeekerName(props.applicant.firstName + ' ' + props.applicant.middleName + ' ' + props.applicant.lastName))
-							navigate(`/services/personnelaccounting/employment/stages/${props.respondId}`)
+							navigate(`/services/personnelaccounting/employment/stages`)
 						}}>
 						Подробнее
 					</Button>

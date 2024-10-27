@@ -33,12 +33,9 @@ import { SupervisorUpdateVacancy } from './supervisor/vacancy/SupervisorUpdateVa
 import { SupervisorVacancies } from './supervisor/vacancy/SupervisorVacancies'
 import { EmploymentStageInfo } from '../employmentStage/personnelDepartment/employmentStageInfo'
 import { DepEmploymentSeekerInfo } from '../employmentStage/personnelDepartment/depEmploymentSeekerInfo'
-import { RequisiteReview } from '../requisite/review/RequisiteReview'
-import { CardCreationList } from '../requisite/card/CardCreationList'
-import { CardCreationInfo } from '../requisite/card/CardCreationInfo'
-import { CardCreationSeekerInfo } from '../requisite/card/CardCreationSeekerInfo'
-import { RequisiteReviewInfo } from '../requisite/review/RequisiteReviewInfo'
-import { RequisiteSeekerInfo } from '../requisite/review/RequisiteSeekerInfo'
+import { RequisiteMain } from '../requisite/review/RequisiteMain'
+import { RequisiteStage } from '../requisite/review/RequisiteStage'
+import { RequisiteSeeker } from '../requisite/review/RequisiteSeeker'
 
 export const NavPesonnelAccounting = () => {
 	const { pathname } = useLocation()
@@ -81,7 +78,7 @@ export const NavPesonnelAccounting = () => {
 		},
 		{
 			id: '/services/personnelaccounting/requisite',
-			icon: <RespondsIcon />,
+			icon: <VacanciesIcon/>,
 			name: 'Реквизиты'
 		}
 	]
@@ -153,34 +150,6 @@ export const NavPesonnelAccounting = () => {
 					<p className="text-base">{'Реквизиты'}</p>
 				</div>
 			),
-			children: (
-				<div className="flex flex-col gap-[12px] ml-[24px]">
-					<p
-						className={clsx(
-							'font-content-font text-black text-[14px]/[14px] font-normal',
-							pathname !== '/services/personnelaccounting/requisite/requisite-review' &&
-							'opacity-[52%]'
-						)}
-						onClick={() => {
-							navigate('/services/personnelaccounting/requisite/requisite-review')
-						}}
-					>
-						Просмотр реквизитов
-					</p>
-					<p
-						className={clsx(
-							'font-content-font text-black text-[14px]/[14px] font-normal',
-							pathname !== '/services/personnelaccounting/requisite/card-creation' &&
-							'opacity-[52%]'
-						)}
-						onClick={() => {
-							navigate('/services/personnelaccounting/requisite/card-creation')
-						}}
-					>
-						Заявки на создание карт
-					</p>
-				</div>
-			)
 		}
 	]
 
@@ -316,7 +285,7 @@ export const NavPesonnelAccounting = () => {
 				<li
 					key={index}
 					className={clsx(
-						'w-full flex items-center pl-5 hover:bg-[#F5F8FB]  cursor-pointer',
+						'w-full flex items-center pl-[16px] hover:bg-[#F5F8FB]  cursor-pointer',
 						id === pathname && 'bg-[#F5F8FB]'
 					)}
 				>
@@ -345,31 +314,13 @@ export const NavPesonnelAccounting = () => {
 				<li
 					key={index}
 					className={clsx(
-						'w-full flex items-center pl-5 hover:bg-[#F5F8FB]  cursor-pointer',
+						'w-full flex items-center pl-[16px] hover:bg-[#F5F8FB]  cursor-pointer',
 						id === pathname && 'bg-[#F5F8FB]'
 					)}
 				>
 					<Collapse
 						className="w-full !bg-inherit"
 						items={navEmployeeListReserveItems}
-						expandIconPosition="end"
-						bordered={false}
-						style={{}}
-					/>
-				</li>
-			)
-		} else if (name === 'Реквизиты') {
-			return (
-				<li
-					key={index}
-					className={clsx(
-						'w-full flex items-center pl-5 hover:bg-[#F5F8FB]  cursor-pointer',
-						id === pathname && 'bg-[#F5F8FB]'
-					)}
-				>
-					<Collapse
-						className="w-full !bg-inherit"
-						items={navEmployeeListRequisiteItems}
 						expandIconPosition="end"
 						bordered={false}
 						style={{}}
@@ -402,7 +353,7 @@ export const NavPesonnelAccounting = () => {
 					<li
 						key={index}
 						className={clsx(
-							'w-full flex items-center pl-5 hover:bg-[#F5F8FB]  cursor-pointer',
+							'w-full flex items-center pl-[16px] hover:bg-[#F5F8FB]  cursor-pointer',
 							id === pathname && 'bg-[#F5F8FB]'
 						)}
 					>
@@ -553,36 +504,24 @@ export const NavPesonnelAccounting = () => {
 					<SupervisorInterviewSeekerInfo/>
 				)}
 				{pathname ===
-					`/services/personnelaccounting/employment/stages/${respondId.respondId}` && (
+					`/services/personnelaccounting/employment/stages` && (
 						<EmploymentStageInfo/>
 					)}
 				{pathname ===
-					'/services/personnelaccounting/employment/stages/seekerinfo' && (
+					'/services/personnelaccounting/employment/stages/seeker-info' && (
 						<DepEmploymentSeekerInfo/>
 					)}
 				{pathname ===
-					'/services/personnelaccounting/requisite/requisite-review' && (
-						<RequisiteReview/>
+					'/services/personnelaccounting/requisite' && (
+						<RequisiteMain/>
 					)}
 				{pathname ===
-					'/services/personnelaccounting/requisite/card-creation' && (
-						<CardCreationList/>
+					`/services/personnelaccounting/requisite/requisite-review` && (
+						<RequisiteStage/>
 					)}
 				{pathname ===
-					`/services/personnelaccounting/requisite/requisite-review/info/${respondId.respondId}` && (
-						<RequisiteReviewInfo/>
-					)}
-				{pathname ===
-					'/services/personnelaccounting/requisite/card-creation/info' && (
-						<CardCreationInfo/>
-					)}
-				{pathname ===
-					'/services/personnelaccounting/requisite/card-creation/info/seekerinfo' && (
-						<CardCreationSeekerInfo/>
-					)}
-				{pathname ===
-					'/services/personnelaccounting/requisite/requisite-review/info/seekerinfo/' && (
-						<RequisiteSeekerInfo/>
+					'/services/personnelaccounting/requisite/requisite-review/seeker-info' && (
+						<RequisiteSeeker/>
 					)}
 			</div>
 		</>

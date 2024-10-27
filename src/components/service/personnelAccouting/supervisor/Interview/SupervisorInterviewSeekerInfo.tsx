@@ -79,7 +79,7 @@ export const SupervisorInterviewSeekerInfo = () => {
 			datePublicString += 'Осталось ' + days + ' дн ' + hours + ' ч'
 		}
 		return (
-			<>
+			<div className='flex flex-col gap-[30px]'>
 				{format.format === 'OFFLINE' &&
 					!isInterviewStarted && ( // Офлайн собес, ожидание
 						<div className="flex flex-col justify-center">
@@ -146,7 +146,7 @@ export const SupervisorInterviewSeekerInfo = () => {
 							</Button>
 							<Button
 								disabled={isEmploymentRequestSent || isSeekerRejected}
-								className="h-[40px] font-content-font font-normal text-black border-[1px] border-black text-[16px]/[16px] rounded-[54.5px]"
+								className=" mr-[50px] h-[40px] font-content-font font-normal text-black border-[1px] border-black text-[16px]/[16px] rounded-[54.5px]"
 								onClick={() => {
 									setIsRefuseModalOpen(true)
 								}}
@@ -155,7 +155,24 @@ export const SupervisorInterviewSeekerInfo = () => {
 							</Button>
 						</div>
 					)}
-			</>
+				<Button
+					disabled={isEmploymentRequestSent || isSeekerRejected}
+					className="h-[40px] w-[257px] bg-[#3073D7] rounded-[54.5px] text-white text-[16px]/[16px]"
+					onClick={values => {
+						aproveSeeker({
+							rejectionReason: 'approve',
+							action: 'EMPLOY',
+							respondId: respondId.respondId
+						})
+							.unwrap()
+							.then(() => {
+								setIsEmploymentRequestSent(true)
+							})
+					}}
+				>
+					invite without time check
+				</Button>
+			</div>
 		)
 	}
 	return (
@@ -287,6 +304,7 @@ export const SupervisorInterviewSeekerInfo = () => {
 											.then(() => {
 												setIsSeekerRejected(true)
 											})
+										setIsRefuseModalOpen(false)
 									}}
 								>
 									<h2 className="font-normal text-[18px]">

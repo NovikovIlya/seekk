@@ -165,7 +165,7 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 						}
 					)}>
 						<div className="mt-[24px] w-[100%] flex flex-col gap-[14px]">
-							<div className="flex flex-row justify-between gap-[14px]">
+							<div className="flex flex-row justify-between gap-[14px] test:gap-[10px]">
 								{props.msgData.reserveTimes.map(time => (
 									<button
 										onClick={() => {
@@ -174,7 +174,7 @@ export const ChatMessage = forwardRef<Ref, Props>((props, ref) => {
 												time: time
 											})
 										}}
-										className="text-[16px]/[19.2px] rounded-[54.5px] py-[12px] px-[20px] text-center bg-inherit outline-none border cursor-pointer"
+										className="text-[16px]/[19.2px] rounded-[54.5px] py-[12px] px-[20px] text-center bg-inherit outline-none border cursor-pointer test:px-[12px]"
 									>
 										{time.substring(0, 10).split('-').reverse().join('.') +
 											', ' +

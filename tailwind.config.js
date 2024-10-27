@@ -20,13 +20,17 @@ module.exports = {
 				'button-blue-hover': '#3483F9',
 				'button-focus-border-blue': '#045ADB'
 			},
+			screens: {
+				'test': {'min': '0px', 'max': '1580px'}
+				// тестовые медиа запросик
+			},
 			fontFamily: {
 				'main-font': ['"Open Sans"', 'sans-serif'],
 				'content-font': ['"PT Sans"', 'sans-serif']
 			},
 			boxShadow: {
 				'custom-shadow': '0 0 19px 0 rgba(212, 227, 241, 0.6)'
-			}
+			},
 		}
 	},
 	corePlugins: {

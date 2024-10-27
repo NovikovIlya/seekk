@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../../store'
 import { useGetRespondFullInfoQuery } from '../../../../store/api/serviceApi'
 
 
-export const RequisiteSeekerInfo = () => {
+export const RequisiteSeeker = () => {
 
 	const respondId = useAppSelector(state => state.currentResponce)
 	const { data } = useGetRespondFullInfoQuery(respondId.respondId)

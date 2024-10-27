@@ -4,13 +4,13 @@ import { Button, Spin } from 'antd'
 import { RequisiteItem } from './RequisiteItem'
 import { LoadingOutlined } from '@ant-design/icons'
 
-export const RequisiteReview = () => {
+export const RequisiteMain = () => {
 
 	const { data: requisite_items = [], isLoading: loading } = useGetPersonnelStagesQuery();
 
 	const verifyingItems = requisite_items.filter(item => item.status === 'VERIFYING');
 	const refineItems = requisite_items.filter(item => item.status === 'REFINE');
-	const completeItems = requisite_items.filter(item => item.status === 'COMPLETE');
+	const completeItems = requisite_items.filter(item => item.status === 'ACCEPTED');
 	const allItems = [...verifyingItems, ...refineItems, ...completeItems]
 
 	const [currentFilterItem, setCurrentFilterItem] = useState('ALL')
@@ -76,9 +76,9 @@ export const RequisiteReview = () => {
 				<Button
 					id="buttonEmploymentStageAccepted"
 					className={`px-[16px] py-[8px] font-normal rounded-[54.5px] text-[16px]/[16px] cursor-pointer ${
-						isActive('COMPLETE') ? 'bg-[#1F5CB8] text-white border-[1px] border-[1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
+						isActive('ACCEPTED') ? 'bg-[#1F5CB8] text-white border-[1px] border-[1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
 					}`}
-					onClick={() => setCurrentFilterItem('COMPLETE')}
+					onClick={() => setCurrentFilterItem('ACCEPTED')}
 				>
 					принято
 				</Button>
@@ -106,7 +106,7 @@ export const RequisiteReview = () => {
 						))}
 					</div>
 				)}
-				{(currentFilterItem === 'COMPLETE') && (
+				{(currentFilterItem === 'ACCEPTED') && (
 					<div className="flex flex-col gap-[12px]">
 						{completeItems.map(item => (
 							<RequisiteItem {...item} key={item.respondId}></RequisiteItem>

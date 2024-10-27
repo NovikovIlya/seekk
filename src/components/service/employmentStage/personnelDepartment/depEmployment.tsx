@@ -10,7 +10,7 @@ export const DepEmployment = () => {
 		= useGetPersonnelStagesQuery();
 	const verifyingItems = employment_stage_items.filter(item => item.status === 'VERIFYING');
 	const refineItems = employment_stage_items.filter(item => item.status === 'REFINE');
-	const completeItems = employment_stage_items.filter(item => item.status === 'COMPLETE');
+	const completeItems = employment_stage_items.filter(item => item.status === 'ACCEPTED');
 	const allItems = [...verifyingItems, ...refineItems, ...completeItems]
 
 	const [currentFilterItem, setCurrentFilterItem] = useState('ALL')
@@ -51,7 +51,9 @@ export const DepEmployment = () => {
 					className={`px-[16px] py-[8px] font-normal rounded-[54.5px] text-[16px]/[16px] cursor-pointer ${
 						isActive('ALL') ? 'bg-[#1F5CB8] text-white border-[1px] border-[#1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
 					}`}
-					onClick={() => setCurrentFilterItem('ALL')}
+					onClick={() => {
+						setCurrentFilterItem('ALL')
+					}}
 				>
 					все
 				</Button>
@@ -60,7 +62,9 @@ export const DepEmployment = () => {
 					className={`px-[16px] py-[8px] font-normal rounded-[54.5px] text-[16px]/[16px] cursor-pointer ${
 						isActive('VERIFYING') ? 'bg-[#1F5CB8] text-white border-[1px] border-[#1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
 					}`}
-					onClick={() => setCurrentFilterItem('VERIFYING')}
+					onClick={() => {
+						setCurrentFilterItem('VERIFYING')
+					}}
 				>
 					на проверке
 				</Button>
@@ -69,16 +73,20 @@ export const DepEmployment = () => {
 					className={`px-[16px] py-[8px] font-normal rounded-[54.5px] text-[16px]/[16px] cursor-pointer ${
 						isActive('REFINE') ? 'bg-[#1F5CB8] text-white border-[1px] border-[#1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
 					}`}
-					onClick={() => setCurrentFilterItem('REFINE')}
+					onClick={() => {
+						setCurrentFilterItem('REFINE')
+					}}
 				>
 					доработка
 				</Button>
 				<Button
 					id="buttonEmploymentStageAccepted"
 					className={`px-[16px] py-[8px] font-normal rounded-[54.5px] text-[16px]/[16px] cursor-pointer ${
-						isActive('COMPLETE') ? 'bg-[#1F5CB8] text-white border-[1px] border-[#1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
+						isActive('ACCEPTED') ? 'bg-[#1F5CB8] text-white border-[1px] border-[#1F5CB8]' : 'bg-[#F5F8FB] text-[#4A4B4C] border-[#4A4B4C] border-[1px]'
 					}`}
-					onClick={() => setCurrentFilterItem('COMPLETE')}
+					onClick={() => {
+						setCurrentFilterItem('ACCEPTED')
+					}}
 				>
 					принято
 				</Button>
@@ -106,7 +114,7 @@ export const DepEmployment = () => {
 						))}
 					</div>
 				)}
-				{(currentFilterItem === 'COMPLETE') && (
+				{(currentFilterItem === 'ACCEPTED') && (
 					<div className="flex flex-col gap-[12px]">
 						{completeItems.map(item => (
 							<DepEmploymentItem {...item} key={item.respondId}></DepEmploymentItem>

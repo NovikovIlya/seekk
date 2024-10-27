@@ -7,7 +7,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { useGetEmploymentReqStageStatusQuery, useGetEmploymentStageStatusQuery } from '../../../../store/api/serviceApi'
 import { DepEmploymentStageItem } from '../../employmentStage/personnelDepartment/depEmploymentStageItem'
 
-export const RequisiteReviewInfo = () => {
+export const RequisiteStage = () => {
 
 	const respondId = useAppSelector(state => state.currentResponce)
 	const seekerName  = useAppSelector(state => state.requisiteSeeker.currentRequisiteSeekerName)
@@ -16,12 +16,8 @@ export const RequisiteReviewInfo = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
-	const currentUrl = window.location.href
-	const parts = currentUrl.split('/')
-	const userIdStr = parts[parts.length - 1]
-	const id = parseInt(userIdStr, 10)
 
-	const { data: req_data, isLoading : loading } = useGetEmploymentReqStageStatusQuery({ respondId: id })
+	const { data: req_data, isLoading : loading } = useGetEmploymentReqStageStatusQuery({ respondId: respondId.respondId })
 	console.log(req_data)
 	const stagesArray = req_data?.stages || [] // массив массивов c этапами
 
@@ -60,10 +56,10 @@ export const RequisiteReviewInfo = () => {
 					{stagesArray?.[0] && (
 						<DepEmploymentStageItem
 							stage={6}
+							role={'accounting'}
 							comment={stagesArray[0].comment}
 							stageStatus={stagesArray[0].status}
-							documentArray={stagesArray[0].documents}
-						/>
+							documentArray={stagesArray[0].documents} />
 					)}
 				</div>
 			</div>

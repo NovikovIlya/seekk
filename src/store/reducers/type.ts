@@ -460,12 +460,12 @@ export type EmploymentStageItemType = {
 		middleName: string
 		lastName: string
 	}
-	status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'COMPLETE'
+	status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'ACCEPTED'
 }
 
 export type EmploymentStageStatusType = {
 	id: number
-	status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'COMPLETE'
+	status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'ACCEPTED'
 	stages: {
 		id: number
 		status: 'FILLING' | 'VERIFYING' | 'REFINE' | 'ACCEPTED'
