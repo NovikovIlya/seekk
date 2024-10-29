@@ -511,7 +511,7 @@ export const ReserveRespondInfo = (props: {
 										<ApproveRespondForm
 											respondId={res.id}
 											vacancyId={0}
-											isRespondSentToSupervisor={false}
+											isRespondSentToSupervisor={isRespondSentToSupervisor}
 											mode={res.type}
 											callback={() => {
 												setIsRespondSentToSupervisor(true)
@@ -532,9 +532,10 @@ export const ReserveRespondInfo = (props: {
 														navigate('/services/personnelaccounting/reserve')
 													})
 											}}
+											disabled={isRespondSentToSupervisor}
 											className="bg-inherit font-content-font font-normal text-black text-[16px]/[16px] rounded-[54.5px] w-[224px] h-[40px] py-[8px] px-[24px] border-black"
 										>
-											Удалить
+											Отклонить
 										</Button>
 									</div>
 								)}
@@ -575,7 +576,11 @@ export const ReserveRespondInfo = (props: {
 												res.userData?.middlename}
 										</p>
 										<p className="ml-auto font-content-font font-normal text-black text-[16px]/[19.2px] opacity-70">
-											{resumeSize}
+											{Math.round(resumeSize / 1000000) > 0
+												? Math.round(resumeSize / 1000000) + ' Мб'
+												: Math.round(resumeSize / 1000) > 0
+												? Math.round(resumeSize / 1000) + ' Кб'
+												: resumeSize + ' б'}
 										</p>
 									</div>
 								</div>

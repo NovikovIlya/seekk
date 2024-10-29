@@ -281,6 +281,7 @@ export type VacancyRespondItemType = {
 	responseDate: string
 	respondDate: string
 	vacancyName: string
+	oldVacancyName?: string
 	vacancyId: number
 	status:
 		| 'IN_REVIEW'
@@ -429,6 +430,7 @@ export type EmployementStatus =
 	| 'REFINE'
 	| 'COMPLETE'
 	| 'READY'
+	| 'ACCEPTED'
 
 export type EmploymentDataType = {
 	id: number
@@ -446,6 +448,7 @@ export type EmploymentDataType = {
 		hasRequisites?: boolean
 		testLink?: string
 		workingConditionAccepted?: boolean
+		bank?: 'SBER' | 'VTB'
 	}[]
 }
 
@@ -489,3 +492,5 @@ export type ChangeStageStatusType = {
 	status: 'ACCEPTED' | 'REFINE'
 	comment: string
 }
+
+export type DocumentDefinitionType = EmploymentDocsType & { required: boolean }

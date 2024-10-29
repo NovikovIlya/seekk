@@ -12,10 +12,20 @@ export const NavPanelElement = (props: { id: number; text: string }) => {
 	const progress = stages.find(stage => stage.id === props.id)
 
 	const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false)
+	//const [isBeingVerified, setIsBeingVerified] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (progress === undefined) {
+			const verifying = stages.find(
+				stage => stage.status === 'VERIFYING' || stage.status === 'ACCEPTED'
+			)
 			const notReady = stages.find(stage => stage.status !== 'READY')
+
+			if (verifying) {
+				setIsReadyToSend(true)
+				//setIsBeingVerified(true);
+				return
+			}
 
 			if (notReady) {
 				setIsReadyToSend(false)
@@ -64,7 +74,7 @@ export const NavPanelElement = (props: { id: number; text: string }) => {
 				dispatch(setStage(props.id))
 			}}
 		>
-			{progress?.status === 'FILLING' ? (
+			{progress.status === 'FILLING' || progress.status === 'REFINE' ? (
 				<>
 					<div
 						className={`shrink-0 h-[28px] w-[28px] rounded-[32px] border-solid border-2 ${
@@ -83,9 +93,16 @@ export const NavPanelElement = (props: { id: number; text: string }) => {
 						{props.text}
 					</div>
 				</>
+			) : progress.status === 'VERIFYING' || progress.status === 'ACCEPTED' ? (
+				<>
+					<div className="h-[28px] w-[28px] opacity-50">
+						<EmpReadyIcon />
+					</div>
+					<div className="text-[#3073D7] text-center">{props.text}</div>
+				</>
 			) : (
 				<>
-					<div className="h-[28px] w-[28px]">
+					<div className="h-[28px] w-[28px] opacity-50">
 						<EmpReadyIcon />
 					</div>
 					<div className="text-[#3073D7] text-center">{props.text}</div>

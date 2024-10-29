@@ -59,7 +59,9 @@ export const Archive = () => {
 						}
 						respondDate={respond.responseDate}
 						refetch={refetch}
-						post={respond.vacancyName}
+						post={
+							respond.vacancyName ? respond.vacancyName : respond.desiredJob
+						}
 					/>
 				))}
 			</div>

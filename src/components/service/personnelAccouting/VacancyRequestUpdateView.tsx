@@ -1,4 +1,5 @@
-import { Button, ConfigProvider, Form, Input, Modal, Select } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Button, ConfigProvider, Form, Input, Modal, Select, Spin } from 'antd'
 import { diff_match_patch } from 'diff-match-patch'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +18,8 @@ import ArrowIcon from '../jobSeeker/ArrowIcon'
 export const VacancyRequestUpdateView = () => {
 	const { requestId } = useAppSelector(state => state.currentRequest)
 	const { data: requestView } = useGetVacancyRequestViewQuery(requestId)
-	const [getVacancyRequestView] = useLazyGetVacancyRequestViewQuery()
+	const [getVacancyRequestView, queryStatus] =
+		useLazyGetVacancyRequestViewQuery()
 	const navigate = useNavigate()
 	const [acceptRequest] = useAcceptUpdateVacancyRequestMutation()
 	const [alterRequest] = useAlterUpdateVacancyRequestMutation()
@@ -103,6 +105,23 @@ export const VacancyRequestUpdateView = () => {
 	const dmp = new diff_match_patch()
 
 	dmp.diff_cleanupSemantic(dmp.diff_main('', ''))
+
+	if (queryStatus.isLoading || queryStatus.isFetching) {
+		return (
+			<>
+				<div className="w-full h-full flex items-center">
+					<div className="text-center ml-auto mr-auto">
+						<Spin
+							indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />}
+						></Spin>
+						<p className="font-content-font font-normal text-black text-[18px]/[18px]">
+							Идёт загрузка...
+						</p>
+					</div>
+				</div>
+			</>
+		)
+	}
 
 	return (
 		<>

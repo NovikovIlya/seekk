@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import {
 	Button,
 	Checkbox,
@@ -5,7 +6,8 @@ import {
 	Form,
 	Input,
 	Modal,
-	Select
+	Select,
+	Spin
 } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -14,6 +16,7 @@ import { useAppSelector } from '../../../store'
 import {
 	useAcceptCreateVacancyRequestMutation,
 	useAlterCreateVacancyRequestMutation,
+	useGetAllDocumentDefinitionsQuery,
 	useGetCategoriesQuery,
 	useGetDirectionsQuery,
 	useGetSubdivisionsQuery,
@@ -25,7 +28,8 @@ import ArrowIcon from '../jobSeeker/ArrowIcon'
 export const VacancyRequestCreateView = () => {
 	const { requestId } = useAppSelector(state => state.currentRequest)
 	const navigate = useNavigate()
-	const [getVacancyRequestView] = useLazyGetVacancyRequestViewQuery()
+	const [getVacancyRequestView, queryStatus] =
+		useLazyGetVacancyRequestViewQuery()
 	const [acceptRequest] = useAcceptCreateVacancyRequestMutation()
 	const [alterRequest] = useAlterCreateVacancyRequestMutation()
 
@@ -35,6 +39,11 @@ export const VacancyRequestCreateView = () => {
 	const [categoryTitle, setCategoryTitle] = useState<string>('')
 	const { data: directions = [] } = useGetDirectionsQuery(categoryTitle)
 	const { data: subdivisions = [] } = useGetSubdivisionsQuery(categoryTitle)
+	const {
+		data: definitions = [],
+		isLoading: loading,
+		isFetching: fetching
+	} = useGetAllDocumentDefinitionsQuery()
 
 	const [isEdit, setIsEdit] = useState<boolean>(false)
 	const [isEdited, setIsEdited] = useState<boolean>(false)
@@ -117,6 +126,23 @@ export const VacancyRequestCreateView = () => {
 				)
 			})
 	}, [])
+
+	if (queryStatus.isLoading || queryStatus.isFetching) {
+		return (
+			<>
+				<div className="w-full h-full flex items-center">
+					<div className="text-center ml-auto mr-auto">
+						<Spin
+							indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />}
+						></Spin>
+						<p className="font-content-font font-normal text-black text-[18px]/[18px]">
+							Идёт загрузка...
+						</p>
+					</div>
+				</div>
+			</>
+		)
+	}
 
 	return (
 		<>
@@ -220,7 +246,12 @@ export const VacancyRequestCreateView = () => {
 										category: categoryTitle,
 										direction: direction,
 										subdivision: subdivision,
-										emplDocDefIds: [...values.formDocs, 8]
+										emplDocDefIds: [
+											...values.formDocs,
+											definitions.find(
+												def => def.employmentStageType === 'SIXTH'
+											)?.id
+										]
 									},
 									requestId: requestId
 							  })
@@ -305,63 +336,45 @@ export const VacancyRequestCreateView = () => {
 					<Form.Item name={'formDocs'} valuePropName="checked">
 						<Checkbox.Group
 							name="docs"
-							defaultValue={[1, 2, 3, 4, 5, 6]}
+							defaultValue={definitions.map(def => {
+								if (def.required) {
+									return def.id
+								}
+							})}
 							className="flex flex-col gap-[8px]"
 						>
 							<p className="font-content-font text-black font-bold text-[18px]/[21.6px] opacity-80 mb-[16px]">
 								2 этап. Прикрепление документов
 							</p>
-							<Checkbox
-								value={1}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Документ, удостоверяющий личность (разворот с фото и прописка)
-							</Checkbox>
-							<Checkbox
-								value={2}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Трудовая книжка
-							</Checkbox>
-							<Checkbox
-								value={3}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								СНИЛС
-							</Checkbox>
-							<Checkbox
-								value={4}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								ИНН
-							</Checkbox>
-							<Checkbox
-								value={5}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Копия документов об образовании
-							</Checkbox>
+							{definitions.map(def =>
+								def.employmentStageType === 'SECOND' ? (
+									<Checkbox
+										value={def.id}
+										disabled={def.required}
+										className="font-content-font text-black font-normal text-[16px]/[19.2px]"
+									>
+										{def.name}
+									</Checkbox>
+								) : (
+									<></>
+								)
+							)}
 							<p className="font-content-font text-black font-bold text-[18px]/[21.6px] opacity-80 mb-[16px] mt-[24px]">
 								4 этап. Медицинский осмотр
 							</p>
-							<Checkbox
-								value={6}
-								disabled
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Заключение профпатолога о профессиональной пригодности работника
-							</Checkbox>
-							<Checkbox
-								value={7}
-								className="font-content-font text-black font-normal text-[16px]/[19.2px]"
-							>
-								Справка об отсутствии (наличии) судимости
-							</Checkbox>
+							{definitions.map(def =>
+								def.employmentStageType === 'FOURTH' ? (
+									<Checkbox
+										value={def.id}
+										disabled={def.required}
+										className="font-content-font text-black font-normal text-[16px]/[19.2px]"
+									>
+										{def.name}
+									</Checkbox>
+								) : (
+									<></>
+								)
+							)}
 						</Checkbox.Group>
 					</Form.Item>
 					<Form.Item>
