@@ -36,8 +36,9 @@ export const Stages = () => {
 
 	const { currentStage } = useAppSelector(state => state.currentEmploymentStage)
 	const { docs } = useAppSelector(state => state.employmentSeekerDocs)
+	const { empData } = useAppSelector(state => state.employmentData)
 
-	const [getEmpData, empData] = useLazyGetEmploymentDataQuery()
+	const [getEmpData, empDataStatus] = useLazyGetEmploymentDataQuery()
 	const [getEmpDocs, empDocs] = useLazyGetEmploymentDocsQuery()
 
 	useEffect(() => {
@@ -106,7 +107,10 @@ export const Stages = () => {
 			})
 	}, [])
 
-	if (currentStage === 0 && (empData.isFetching || empData.isLoading)) {
+	if (
+		currentStage === 0 &&
+		(empDataStatus.isFetching || empDataStatus.isLoading)
+	) {
 		return (
 			<>
 				<div className="w-screen h-screen flex items-center">
@@ -130,7 +134,11 @@ export const Stages = () => {
 					Вакансия «Специалист отдела сотрудничества»
 				</div>
 				<NavPanel />
-				<div className="w-full mt-[40px]">
+				<div
+					className={`w-full mt-[40px] ${
+						empData.status === 'VERIFYING' && 'pointer-events-none'
+					}`}
+				>
 					{currentStage === 1 && (
 						<EmplMedInvite
 							respondId={respondId}

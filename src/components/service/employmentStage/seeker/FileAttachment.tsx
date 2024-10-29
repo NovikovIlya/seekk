@@ -76,7 +76,7 @@ export const FileAttachment = (
 			{foundDoc ? (
 				<>
 					<a
-						className="col-start-2 text-ellipsis overflow-clip"
+						className="col-start-2 text-ellipsis overflow-clip pointer-events-auto"
 						download={true}
 						ref={linkRef}
 					>

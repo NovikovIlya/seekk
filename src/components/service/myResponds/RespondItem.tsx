@@ -107,9 +107,7 @@ export const RespondItem = (props: RespondItemType & { refetch: Function }) => {
 				</Modal>
 			</ConfigProvider>
 			<div className="w-full mb-[12px] flex items-center bg-white shadow-custom-shadow pl-[20px] pr-[55px] pt-[20px] pb-[20px] flex-wrap">
-				<p className="w-[25%]">
-					{props.type === 'RESPOND' ? props.name : props.desiredJob}
-				</p>
+				<p className="w-[25%]">{props.name ? props.name : props.desiredJob}</p>
 				<p className="ml-[5%] w-[8%]">
 					{props.respondDate.split('-').reverse().join('.')}
 				</p>

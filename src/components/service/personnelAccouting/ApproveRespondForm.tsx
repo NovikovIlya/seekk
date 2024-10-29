@@ -46,7 +46,7 @@ export const ApproveRespondForm = (props: {
 						})
 							.unwrap()
 							.then(() => {
-								result.isSuccess && props.callback()
+								props.callback()
 								setIsFormOpen(false)
 							})
 					}}

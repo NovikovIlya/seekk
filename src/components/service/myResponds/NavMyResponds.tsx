@@ -63,12 +63,14 @@ export const NavMyResponds = () => {
 					{handleList}
 				</ul>
 			</div>
-			{pathname === navList[0].id && <MyResponds />}
-			{pathname === navList[0].id + '/fullinfo' && (
-				<RespondInfo type="SEEKER" />
-			)}
-			{pathname.includes(navList[1].id) && <Chat />}
-			{pathname.includes(navList[2].id) && <NavSeekerEmployment />}
+			<div className="bg-[#F5F8FB] flex w-full">
+				{pathname === navList[0].id && <MyResponds />}
+				{pathname === navList[0].id + '/fullinfo' && (
+					<RespondInfo type="SEEKER" />
+				)}
+				{pathname.includes(navList[1].id) && <Chat />}
+				{pathname.includes(navList[2].id) && <NavSeekerEmployment />}
+			</div>
 		</>
 	)
 }
